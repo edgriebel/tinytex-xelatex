@@ -1,0 +1,18 @@
+FROM alpine
+
+RUN apk add --no-cache \
+	ghostscript \
+	make \
+	perl \
+	wget
+
+RUN apk add fontconfig --no-cache --repository https://www.freedesktop.org/wiki/Software/fontconfig --allow-untrusted
+
+RUN wget -qO- "https://yihui.name/gh/tinytex/tools/install-unx.sh" | sh
+
+ENV PATH="${PATH}:/root/bin"
+
+RUN tlmgr install xetex
+RUN fmtutil-sys --all
+
+RUN tlmgr install hyphenat tracklang xltxtra realscripts
